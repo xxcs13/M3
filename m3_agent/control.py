@@ -19,6 +19,10 @@ import time
 import openai
 import argparse
 import multiprocessing
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Add parent directory to Python path to import mmagent
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -44,9 +48,11 @@ gpt_model = "openai/gpt-4o"
 #     api_version=config[gpt_model]["api_version"],
 #     api_key=config[gpt_model]["api_key"],
 # )
+# Get API key from environment variable
+api_key = os.getenv("OPENROUTER_API_KEY")
 client = openai.OpenAI(
             base_url=config[gpt_model]["base_url"],
-            api_key=config[gpt_model]["api_key"],
+            api_key=api_key,  # Use environment variable
 )
 
 def get_response(messages, timeout=30):

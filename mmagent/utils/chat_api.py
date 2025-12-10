@@ -11,11 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
 import json
 import openai
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep
 import logging
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -34,6 +39,11 @@ temp = processing_config["temperature"]
 
 try:
     config = json.load(open("configs/api_config.json"))
+    # Get API key from environment variable
+    api_key = os.getenv("OPENROUTER_API_KEY")
+    if not api_key:
+        logger.warning("OPENROUTER_API_KEY not found in environment variables")
+    
     client = {}
     for model_name in config.keys():
         # Support both Azure and standard OpenAI API
@@ -41,12 +51,12 @@ try:
             client[model_name] = openai.AzureOpenAI(
                 azure_endpoint=config[model_name]["azure_endpoint"],
                 api_version=config[model_name]["api_version"],
-                api_key=config[model_name]["api_key"],
+                api_key=os.getenv("AZURE_API_KEY", config[model_name].get("api_key")),
             )
         else:
             client[model_name] = openai.OpenAI(
                 base_url=config[model_name]["base_url"],
-                api_key=config[model_name]["api_key"],
+                api_key=api_key,  # Use environment variable
             )
 except Exception as e:
     logger.warning(f"Failed to load API config: {e}")
