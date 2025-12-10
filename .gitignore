@@ -10,5 +10,4 @@ out*
 *.log
 results
 todo
-configs/api_config.json
 .env
