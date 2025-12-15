@@ -85,7 +85,10 @@ def streaming_process_video(video_graph, sample):
     Returns:
         None: Updates video_graph in place with processed segments
     """
-    clips = glob.glob(sample["clip_path"] + "/*")
+    clips = sorted(
+        glob.glob(sample["clip_path"] + "/*"),
+        key=lambda x: int(os.path.basename(x).split(".")[0])
+    )
     for clip_path in clips:
         clip_id = int(clip_path.split("/")[-1].split(".")[0])
         base64_video, base64_frames, base64_audio = process_video_clip(clip_path)
