@@ -85,6 +85,7 @@ def streaming_process_video(video_graph, sample):
     Returns:
         None: Updates video_graph in place with processed segments
     """
+    # Fix: Using "sorted()" to ensure clips are processed in order.
     clips = sorted(
         glob.glob(sample["clip_path"] + "/*"),
         key=lambda x: int(os.path.basename(x).split(".")[0])
