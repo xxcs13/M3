@@ -81,7 +81,7 @@ def print_clip_full(vg, clip_id: int,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mem_path", type=str, default="data/memory_graphs/robot/bedroom_01.pkl")
+    parser.add_argument("--mem_path", type=str, default="data/videos/memory_graphs｀｀/bedroom_01.pkl")
     parser.add_argument("--clip_id", type=int, default=0)
     args = parser.parse_args()
 
